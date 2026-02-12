@@ -1,0 +1,32 @@
+# General
+.DS_Store
+*.log
+
+# Server (Python)
+server/__pycache__/
+server/*.py[cod]
+server/*$py.class
+server/venv/
+server/.env
+server/.venv
+server/env/
+server/ENV/
+
+# Client (Node/Next.js)
+client/node_modules/
+client/.next/
+client/out/
+client/build/
+client/.DS_Store
+client/*.log
+client/.env
+client/.env.local
+client/.env.*.local
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*
+client/pnpm-debug.log*
+
+# Database
+server/*.db
+server/*.sqlite3
