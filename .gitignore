@@ -2,11 +2,14 @@
 .DS_Store
 *.log
 
-# Server (Python)
-server/__pycache__/
-server/*.py[cod]
-server/*$py.class
-server/venv/
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+ENV/
 server/.env
 server/.venv
 server/env/

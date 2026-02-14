@@ -11,6 +11,10 @@ app = FastAPI(title=settings.PROJECT_NAME)
 # Mount Socket.IO app
 app.mount("/socket.io", socket_app)
 
+# API Routers
+from app.api import admin
+app.include_router(admin.router, prefix="/api/admin", tags=["Admin Auth"])
+
 @app.get("/")
 async def root():
     return {"message": "Hello World", "project": settings.PROJECT_NAME}
