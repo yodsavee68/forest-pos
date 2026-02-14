@@ -33,3 +33,34 @@ cache.clear()
 - **Table Token**: เก็บ Token ชั่วคราวตอนเปิดโต๊ะ
 
 ---
+
+## 2. General Utilities (`server/app/core/utils.py`)
+ฟังก์ชันสำหรับจัดการข้อมูลทั่วไป เช่น วันที่, เวลา, การจัดรูปแบบ, และการสุ่มรหัส
+
+### ใช้งาน
+```python
+from app.core import utils
+
+# 1. จัดการเวลา (Timezone Asia/Bangkok)
+now = utils.get_current_time() # ได้ datetime object
+
+# 2. จัดรูปแบบวันที่แบบไทย (dd/mm/yyyy HH:MM)
+print(utils.format_thai_datetime(now)) 
+# Output: "15/02/2024 13:00"
+
+# 3. จัดรูปแบบเงิน (Currency)
+print(utils.format_currency(1234.5))
+# Output: "1,234.50"
+
+# 4. สุ่มรหัสอ้างอิง (Reference Code) - ตัวใหญ่+ตัวเลข
+ref = utils.generate_ref_code(length=8)
+# Output: "A1X9B2C3" (เหมาะสำหรับ Order ID ที่ลูกค้าเห็น)
+
+# 5. สุ่มรหัส OTP (ตัวเลขล้วน)
+otp = utils.generate_otp(length=6)
+# Output: "123456"
+
+# 6. สร้าง UUID (String)
+uid = utils.generate_uuid()
+# Output: "550e8400-e29b-41d4-a716-446655440000" (เหมาะสำหรับ Primary Key หรือ Token)
+```
