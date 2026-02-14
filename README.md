@@ -3,8 +3,9 @@
 ระบบจัดการร้านอาหารและสั่งอาหารผ่าน QR Code พัฒนาด้วย FastAPI และ Next.js
 
 ## เอกสารที่เกี่ยวข้อง (Related Documentation)
-- **[API Documentation](./API_DOCS.md)**: รายละเอียด API Endpoints ทั้งหมด
-- **[Project Roles & Guides](./role.md)**: รายชื่อสมาชิกในทีม หน้าที่รับผิดชอบ และคู่มือการทำงาน
+- **[API Documentation](./docs/API_DOCS.md)**: รายละเอียด API Endpoints ทั้งหมด
+- **[Project Roles & Guides](./docs/role.md)**: รายชื่อสมาชิกในทีม หน้าที่รับผิดชอบ และคู่มือการทำงาน
+- **[Common Utilities Guide](./docs/UTILS_GUIDE.md)**: คู่มือการใช้งานฟังก์ชันกลาง (e.g., Cache)
 
 ## โครงสร้างโปรเจกต์ (Project Structure)
 - **`server/`**: Backend (FastAPI, Python 3.13, SQLAlchemy, Socket.io)
