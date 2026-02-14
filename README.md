@@ -84,3 +84,21 @@ uvicorn app.main:app --reload --port 8000
 npm run dev
 ```
 - **Web App**: http://localhost:3000
+
+---
+
+## การทดสอบ (Testing)
+สามารถรัน Unit Tests สำหรับ Backend ได้ด้วยคำสั่ง `pytest`:
+
+1. เข้าไปที่โฟลเดอร์ `server`:
+   ```bash
+   cd server
+   ```
+2. Activate Virtual Environment (ถ้ายังไม่ได้ทำ):
+   ```bash
+   source venv/bin/activate
+   ```
+3. รันคำสั่ง Test:
+   ```bash
+   PYTHONPATH=. pytest
+   ```

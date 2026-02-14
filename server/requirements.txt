@@ -9,3 +9,7 @@ bcrypt
 python-jose[cryptography]
 python-multipart
 greenlet
+pytest
+pytest-asyncio
+httpx
+pytz
