@@ -2,165 +2,72 @@
 
 Base URL: `http://localhost:8000`
 
-## 1. Orders (Customer & Waiter)
+## Authentication (Admin)
+- POST /api/admin/register สร้างบัญชีผู้ใช้ (Admin/Staff)
+- POST /api/admin/login เข้าสู่ระบบรับ Token
+- GET /api/admin/me ดึงข้อมูลผู้ใช้ที่กำลังล็อกอิน
+- GET /api/admin/users ดึงรายชื่อผู้ใช้ทั้งหมด
+- POST /api/admin/users สร้างบัญชีผู้ใช้ใหม่ (Admin)
+- PATCH /api/admin/users/{user_id} อัพเดทข้อมูลผู้ใช้ (Admin)
+- DELETE /api/admin/users/{user_id} ลบผู้ใช้ (Admin)
 
-### Create New Order
-- **Endpoint:** `POST /api/orders`
-- **Description:** สร้างออเดอร์ใหม่จากลูกค้า
-- **Responsible:** นายยศวีร์ ศุภโชคธนาทรัพย์
-- **Request Body:**
-  ```json
-  {
-    "session_id": 1,
-    "items": [
-      {
-        "product_id": 1,
-        "quantity": 2,
-        "note": "Less spicy",
-        "modifiers": [
-          { "modifier_option_id": 10, "price": 10.0 }
-        ]
-      }
-    ]
-  }
-  ```
-- **Response:**
-  ```json
-  {
-    "id": 101,
-    "status": "pending",
-    "total_price": 250.0,
-    "created_at": "2024-02-15T12:00:00Z"
-  }
-  ```
+## Orders (Customer & Waiter)
+- POST /api/orders สร้างออเดอร์ใหม่จากลูกค้า
+- GET /api/orders/{order_id} ดูรายละเอียดของออเดอร์
+- PATCH /api/orders/{order_id}/status อัพเดทสถานะออเดอร์ (Cooking, Served, Cancelled)
+- GET /api/orders/active ดึงรายการออเดอร์ที่ยังไม่เสร็จสิ้น (Active orders)
+- GET /api/orders/today ดึงรายการออเดอร์ของวันนี้
+- GET /api/orders/history ดึงรายการออเดอร์ย้อนหลัง
+- GET /api/orders/history/{order_id} ดูรายละเอียดของออเดอร์ย้อนหลัง
+- PATCH /api/orders/{order_id}/payment อัพเดทสถานะการชำระเงิน (Bill Splitting, Discount)
+- GET /api/orders/summary ดึงสรุปยอดขายและจำนวนออเดอร์วันนี้
 
-### Get Order Details
-- **Endpoint:** `GET /api/orders/{order_id}`
-- **Description:** ดูรายละเอียดของออเดอร์
-- **Responsible:** นายยศวีร์ ศุภโชคธนาทรัพย์
+## Kitchen (Kitchen Display System)
+- GET /api/kitchen/orders ดึงรายการอาหารที่ต้องทำ (Queue)
+- PATCH /api/kitchen/orders/{item_id}/status อัพเดทสถานะรายการอาหาร (Cooking -> Done)
 
-### Update Order Status
-- **Endpoint:** `PATCH /api/orders/{order_id}/status`
-- **Description:** อัพเดทสถานะออเดอร์ (เตรียมอาหาร, เสิร์ฟแล้ว, ยกเลิก)
-- **Responsible:** นายวิศรุต ปู่แก้ว
-- **Request Body:**
-  ```json
-  {
-    "status": "served"
-  }
-  ```
+## Products (Menu)
+- GET /api/products ดึงรายชื่อเมนูอาหารทั้งหมด
+- GET /api/products/{product_id}/options ดึงตัวเลือกของเมนู
+- POST /api/products เพิ่มเมนูอาหารใหม่ (Admin)
+- PATCH /api/products/{product_id} อัพเดทข้อมูลเมนู (Admin)
+- DELETE /api/products/{product_id} ลบเมนู (Admin)
+- POST /api/products/{product_id}/image อัพโหลดรูปภาพเมนู
 
-### Get Active Orders
-- **Endpoint:** `GET /api/orders/active`
-- **Description:** ดึงรายการออเดอร์ที่ยังไม่เสร็จสิ้น (สำหรับครัว/จอรวม)
-- **Responsible:** นายจารุกิตติ์ ใจงาม
+## Categories (Menu Categories)
+- GET /api/categories ดึงหมวดหมู่ทั้งหมด
+- POST /api/categories สร้างหมวดหมู่ใหม่
+- PATCH /api/categories/{category_id} แก้ไขหมวดหมู่
+- DELETE /api/categories/{category_id} ลบหมวดหมู่
+- POST /api/categories/sort เรียงลำดับหมวดหมู่
 
----
+## Modifiers (Options & Toppings)
+- GET /api/modifiers ดึงกลุ่มตัวเลือกทั้งหมด (Spicy Level, Toppings)
+- POST /api/modifiers สร้างกลุ่มตัวเลือก
+- PATCH /api/modifiers/{group_id} แก้ไขกลุ่มตัวเลือก
+- DELETE /api/modifiers/{group_id} ลบกลุ่มตัวเลือก
 
-## 2. Products (Menu)
+## Tables & Zones
+- GET /api/tables ดึงข้อมูลโต๊ะทั้งหมด (Master Data)
+- POST /api/tables สร้างโต๊ะใหม่
+- PATCH /api/tables/{table_id} แก้ไขข้อมูลโต๊ะ
+- DELETE /api/tables/{table_id} ลบโต๊ะ
+- POST /api/tables/{table_id}/qrcode สร้าง/ดึง QR Code สำหรับโต๊ะ
+- POST /api/tables/open เปิดโต๊ะและสร้าง Session สำหรับลูกค้า
+- GET /api/tables/active ดึงรายการโต๊ะที่เปิดอยู่ (Active Sessions)
+- PATCH /api/tables/{table_id}/close ปิดโต๊ะ (Check bin)
 
-### Get All Products
-- **Endpoint:** `GET /api/products`
-- **Description:** ดึงรายชื่อเมนูอาหารทั้งหมด
-- **Responsible:** นายปรีชา แสงแก้ว
-- **Response:**
-  ```json
-  [
-    {
-      "id": 1,
-      "name": "Pad Thai",
-      "price": 80.0,
-      "category": "Main Course",
-      "image_url": "..."
-    }
-  ]
-  ```
+## Notifications
+- POST /api/notifications/send ส่งแจ้งเตือนเรียกพนักงาน
 
-### Get Product Options
-- **Endpoint:** `GET /api/products/{product_id}/options`
-- **Description:** ดึงตัวเลือกของเมนู (เช่น ระดับความเผ็ด, เนื้อสัตว์)
-- **Responsible:** นายปรีชา แสงแก้ว
+## Settings (Store Config)
+- GET /api/settings ดึงค่าตั้งค่าร้าน (Tax, Service Charge, Info)
+- PATCH /api/settings อัพเดทค่าตั้งค่าร้าน
 
-### Create New Product
-- **Endpoint:** `POST /api/products`
-- **Description:** เพิ่มเมนูอาหารใหม่ (Admin)
-- **Responsible:** นายณัฐวุฒิ ตูมหอม
-- **Request Body:**
-  ```json
-  {
-    "name": "Tom Yum Kung",
-    "price": 120.0,
-    "category_id": 1,
-    "modifier_groups": [
-      { "id": 1, "sort_order": 1 }
-    ]
-  }
-  ```
+## Dashboard (Admin)
+- GET /api/admin/dashboard/stats ดูสรุปยอดขายและจำนวนออเดอร์วันนี้
+- GET /api/admin/dashboard/top-selling ดู 5 อันดับเมนูขายดี
 
----
-
-## 3. Tables & Notifications
-
-### Open Table (Generate QR)
-- **Endpoint:** `POST /api/tables/open`
-- **Description:** เปิดโต๊ะและสร้าง Session สำหรับลูกค้า
-- **Responsible:** นายณัฐวุฒิ ตูมหอม
-- **Request Body:**
-  ```json
-  {
-    "table_no": "B5"
-  }
-  ```
-- **Response:**
-  ```json
-  {
-    "access_code": "4829",
-    "qr_uuid": "...",
-    "qr_url": "http://frontend/table/..."
-  }
-  ```
-
-### Send Notification (Call Waiter)
-- **Endpoint:** `POST /api/notifications/send`
-- **Description:** ส่งแจ้งเตือนเรียกพนักงาน
-- **Responsible:** นายวิศรุต ปู่แก้ว
-- **Request Body:**
-  ```json
-  {
-    "table_no": "A1",
-    "type": "call_waiter",
-    "message": "Customer needs assistance"
-  }
-  ```
-
----
-
-## 4. Dashboard (Admin)
-
-### Get Daily Stats
-- **Endpoint:** `GET /api/admin/dashboard/stats`
-- **Description:** ดูสรุปยอดขายและจำนวนออเดอร์วันนี้
-- **Responsible:** นายเอกวุธ ศรีแปลง
-- **Response:**
-  ```json
-  {
-    "total_sales": 15000.0,
-    "total_orders": 45
-  }
-  ```
-
-### Get Top Selling Items
-- **Endpoint:** `GET /api/admin/dashboard/top-selling`
-- **Description:** ดู 5 อันดับเมนูขายดี
-- **Responsible:** นายเอกวุธ ศรีแปลง
-
----
-
-## 5. Real-time (Socket.io)
-
-### Order Updates
-- **Namespace:** `/socket.io/orders`
-- **Events:**
-  - `new_order`: ส่งข้อมูลเมื่อมีออเดอร์ใหม่เข้ามา
-  - `order_status_updated`: ส่งข้อมูลเมื่อสถานะเปลี่ยน
-- **Responsible:** นายจารุกิตติ์ ใจงาม
+## Real-time (Socket.io)
+- Namespace: `/socket.io/orders`
+  - Events: `new_order`, `order_status_updated`, `call_waiter`, `payment_request`
