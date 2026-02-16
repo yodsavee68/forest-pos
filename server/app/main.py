@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import socketio
 from app.core.config import settings
 from app.database import engine, Base
-import app.models # Register models
+import app.models
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
