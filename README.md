@@ -3,8 +3,8 @@
 ระบบจัดการร้านอาหารและสั่งอาหารผ่าน QR Code พัฒนาด้วย FastAPI และ Next.js
 
 ## เอกสารที่เกี่ยวข้อง (Related Documentation)
-- **[API Documentation](./docs/API_DOCS.md)**: รายละเอียด API Endpoints ทั้งหมด
 - **[Project Roles & Guides](./docs/ROLE.md)**: รายชื่อสมาชิกในทีม หน้าที่รับผิดชอบ และคู่มือการทำงาน
+- **[API Documentation](./docs/API_DOCS.md)**: รายละเอียด API Endpoints ทั้งหมด
 - [Common Utilities Guide](./docs/UTILS_GUIDE.md): คู่มือการใช้งานฟังก์ชันกลาง (e.g., Cache)
 - **[Frontend Routes Documentation](./docs/FRONTEND_ROUTES.md)**: รายละเอียด Route และโครงสร้างของ Frontend (POS & Order)
 
