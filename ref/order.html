@@ -1,0 +1,1212 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Low-Fi QR Ordering Wireframe</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* CSS เดิมทั้งหมดคงไว้... */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+      :root {
+        --wf-bg: #ffffff;
+        --wf-surface: #f5f5f5;
+        --wf-border: #d0d0d0;
+        --wf-text-main: #222222;
+        --wf-text-sub: #666666;
+        --wf-accent: #333333;
+        --wf-spacing: 16px;
+        --wf-radius: 8px;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #e0e0e0;
+        display: flex;
+        justify-content: center;
+        min-height: 100vh;
+      }
+      .app-container {
+        width: 100%;
+        max-width: 393px;
+        background-color: var(--wf-bg);
+        height: 100vh;
+        max-height: 852px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        container-type: inline-size;
+        container-name: app;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+
+      /* --- Elements เดิม --- */
+      .top-header {
+        padding: var(--wf-spacing);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--wf-bg);
+        border-bottom: 1px solid var(--wf-border);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      .logo-placeholder {
+        width: 80px;
+        height: 32px;
+        background: var(--wf-surface);
+        border: 1px dashed var(--wf-text-sub);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        color: var(--wf-text-sub);
+        border-radius: 4px;
+      }
+      .header-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .lang-switch {
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+      }
+      .icon-btn {
+        font-size: 1.2rem;
+        color: var(--wf-text-main);
+        cursor: pointer;
+      }
+      .content-scroll {
+        flex: 1;
+        overflow-y: auto;
+        padding-bottom: 80px;
+      }
+      .promo-section {
+        padding: var(--wf-spacing);
+      }
+      .promo-banner {
+        width: 100%;
+        aspect-ratio: 16/9;
+        background: var(--wf-surface);
+        border: 1px solid var(--wf-border);
+        border-radius: var(--wf-radius);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .promo-banner img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.7;
+        filter: grayscale(100%);
+      }
+      .category-nav {
+        padding: 0 0 var(--wf-spacing) var(--wf-spacing);
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      .cat-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        min-width: 64px;
+        cursor: pointer;
+      }
+      .cat-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: var(--wf-surface);
+        border: 1px solid var(--wf-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: var(--wf-text-sub);
+      }
+      .cat-item.active .cat-icon {
+        background: var(--wf-accent);
+        color: white;
+        border-color: var(--wf-accent);
+      }
+      .cat-label {
+        font-size: 0.75rem;
+        color: var(--wf-text-main);
+      }
+      .menu-grid {
+        padding: 0 var(--wf-spacing) var(--wf-spacing);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .menu-card {
+        border: 1px solid var(--wf-border);
+        border-radius: var(--wf-radius);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        background: var(--wf-bg);
+        cursor: pointer;
+        transition: transform 0.1s;
+      }
+      .card-img {
+        width: 100%;
+        aspect-ratio: 1/1;
+        background: var(--wf-surface);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .card-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: grayscale(100%);
+        opacity: 0.8;
+      }
+      .card-content {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .card-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--wf-text-main);
+      }
+      .card-price-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 4px;
+      }
+      .card-price {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--wf-text-main);
+      }
+      .add-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--wf-accent);
+        color: white;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+
+      /* Footer */
+      .sticky-footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: var(--wf-bg);
+        border-top: 1px solid var(--wf-border);
+        padding: var(--wf-spacing);
+        box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
+        z-index: 20;
+      }
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--wf-accent);
+        color: white;
+        padding: 12px 16px;
+        border-radius: 50px;
+        cursor: pointer;
+      }
+      .order-info {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+      }
+      .item-count {
+        font-size: 0.75rem;
+        opacity: 0.9;
+      }
+      .total-price {
+        font-size: 1rem;
+        font-weight: 700;
+      }
+      .view-order-text {
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+
+      /* Modal Styles */
+      .modal-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 50;
+        display: flex;
+        align-items: flex-end;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+      .modal-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .modal-content {
+        width: 100%;
+        background: var(--wf-bg);
+        border-radius: 16px 16px 0 0;
+        padding: var(--wf-spacing);
+        max-height: 85%;
+        overflow-y: auto;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+      }
+      .modal-overlay.active .modal-content {
+        transform: translateY(0);
+      }
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        border-bottom: 1px solid var(--wf-border);
+        padding-bottom: 12px;
+      }
+      .modal-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+      }
+      .close-btn {
+        font-size: 1.2rem;
+        color: var(--wf-text-sub);
+        cursor: pointer;
+        padding: 4px;
+      }
+
+      /* --- NEW: Order Summary Styles --- */
+      .order-item-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      .order-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .order-item-info {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .order-item-qty {
+        font-weight: 600;
+        color: var(--wf-accent);
+        width: 24px;
+      }
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+        color: var(--wf-text-sub);
+      }
+      .summary-row.total {
+        border-top: 1px solid var(--wf-border);
+        padding-top: 12px;
+        margin-top: 8px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--wf-text-main);
+      }
+      .checkout-btn {
+        width: 100%;
+        background: var(--wf-accent);
+        color: white;
+        border: none;
+        padding: 16px;
+        border-radius: var(--wf-radius);
+        font-weight: 700;
+        font-size: 1rem;
+        margin-top: 20px;
+        cursor: pointer;
+      }
+
+      /* Utility */
+      .item-detail-image {
+        width: 100%;
+        aspect-ratio: 4/3;
+        background: var(--wf-surface);
+        border-radius: var(--wf-radius);
+        margin-bottom: 20px;
+        overflow: hidden;
+        border: 1px solid var(--wf-border);
+      }
+      .item-detail-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: grayscale(100%);
+      }
+      .item-detail-price {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--wf-text-main);
+        margin-bottom: 24px;
+        display: block;
+      }
+      .item-detail-desc {
+        height: 10px;
+        background: var(--wf-surface);
+        margin-bottom: 8px;
+        width: 100%;
+        border-radius: 4px;
+      }
+      .item-detail-desc.short {
+        width: 70%;
+      }
+      .item-actions {
+        margin-top: 24px;
+        display: flex;
+        gap: 12px;
+      }
+      .qty-selector {
+        display: flex;
+        align-items: center;
+        border: 1px solid var(--wf-border);
+        border-radius: var(--wf-radius);
+        padding: 8px;
+        gap: 16px;
+      }
+      .add-to-cart-btn {
+        flex: 1;
+        background: var(--wf-accent);
+        color: white;
+        border: none;
+        border-radius: var(--wf-radius);
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+      .cat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        padding-bottom: 20px;
+      }
+      .cat-grid-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 8px;
+        cursor: pointer;
+      }
+      .cat-grid-icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: var(--wf-surface);
+        border: 1px solid var(--wf-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: var(--wf-text-main);
+      }
+
+      /* --- NEW: Modal Options Styles --- */
+      .option-section {
+        margin-top: 24px;
+        border-top: 1px solid var(--wf-border);
+        padding-top: 16px;
+      }
+      .option-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+      .option-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--wf-text-main);
+      }
+      .badge {
+        font-size: 0.7rem;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      .badge.required {
+        background: var(--wf-surface);
+        color: var(--wf-text-sub);
+        border: 1px solid var(--wf-border);
+      }
+      .badge.optional {
+        background: transparent;
+        color: var(--wf-text-sub);
+        border: 1px solid var(--wf-border);
+      }
+
+      /* Spiciness */
+      .spiciness-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .spicy-pill {
+        padding: 8px 16px;
+        border-radius: 50px;
+        background: var(--wf-surface);
+        border: 1px solid transparent; /* reserve space for border */
+        font-size: 0.9rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s;
+        color: var(--wf-text-main);
+      }
+      .spicy-pill.selected {
+        background: var(--wf-accent);
+        color: white;
+        border-color: var(--wf-accent);
+      }
+      /* Extras */
+      .extras-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .extra-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        padding: 4px 0;
+      }
+      .extra-label {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 0.95rem;
+        color: var(--wf-text-main);
+      }
+      .extra-checkbox {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--wf-border);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        transition: all 0.2s;
+      }
+      .extra-item.selected .extra-checkbox {
+        background: var(--wf-accent);
+        border-color: var(--wf-accent);
+      }
+      .extra-item.selected .extra-checkbox i {
+        display: block;
+      }
+      .extra-checkbox i {
+        display: none;
+        font-size: 0.7rem;
+      }
+      .extra-price {
+        font-size: 0.9rem;
+        color: var(--wf-text-sub);
+      }
+
+      /* --- NEW: Welcome Screen Styles --- */
+      .welcome-screen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--wf-bg);
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 24px;
+        overflow-y: auto;
+        transition: transform 0.4s ease-in-out;
+      }
+      .welcome-screen.hidden {
+        transform: translateY(-100%);
+      }
+      .ws-logo-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 24px;
+      }
+      .ws-logo-icon {
+        width: 60px;
+        height: 60px;
+        border: 1px solid var(--wf-border);
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column; /* To stack icon and text if needed, or align center */
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: var(--wf-text-sub);
+      }
+      .ws-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--wf-text-main);
+      }
+      .ws-subtitle {
+        font-size: 0.9rem;
+        color: var(--wf-text-sub);
+      }
+      
+      .ws-card {
+        width: 100%;
+        background: var(--wf-surface);
+        border-radius: 20px;
+        padding: 32px 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      .ws-card-visual {
+         display: flex;
+         align-items: center;
+         gap: 20px;
+      }
+      .ws-table-icon {
+        font-size: 3.5rem;
+        color: var(--wf-text-sub);
+        opacity: 0.6;
+      }
+      .ws-qr-box {
+        width: 80px;
+        height: 80px;
+        background: white;
+        padding: 4px;
+        border-radius: 8px;
+      }
+      .ws-qr-box img {
+        width: 100%;
+        height: 100%;
+      }
+      .ws-table-name {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: var(--wf-text-main);
+      }
+      .ws-table-desc {
+        font-size: 0.9rem;
+        color: var(--wf-text-sub);
+        text-align: center;
+      }
+
+      .ws-lang-row {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 32px;
+        font-weight: 600;
+        color: var(--wf-text-sub);
+      }
+      .ws-lang-item {
+        cursor: pointer;
+        padding: 4px 12px;
+        border-radius: 20px;
+      }
+      .ws-lang-item.active {
+        background: #7e22ce; /* Purple */
+        color: white;
+      }
+
+      .ws-btn-primary {
+        width: 100%;
+        padding: 16px;
+        border-radius: 50px;
+        background: #7e22ce; /* Purple */
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 700;
+        border: none;
+        box-shadow: 0 4px 6px rgba(126, 34, 206, 0.3);
+        margin-bottom: 16px;
+        cursor: pointer;
+      }
+      .ws-btn-secondary {
+        width: 100%;
+        padding: 16px;
+        border-radius: 50px;
+        background: transparent;
+        color: var(--wf-text-main);
+        font-size: 1rem;
+        font-weight: 600;
+        border: 2px solid var(--wf-border);
+        margin-bottom: 40px;
+        cursor: pointer;
+      }
+
+      .ws-footer-actions {
+        display: flex;
+        gap: 40px;
+        justify-content: center;
+        width: 100%;
+      }
+      .ws-action-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+      }
+      .ws-action-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--wf-surface);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: var(--wf-text-main);
+      }
+      .ws-action-label {
+        font-size: 0.85rem;
+        color: var(--wf-text-main);
+        font-weight: 500;
+      }
+
+      /* --- NEW: Success Screen Styles --- */
+      .success-screen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: white;
+        z-index: 200;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        text-align: center;
+        transform: translateY(100%);
+        transition: transform 0.3s ease-in-out;
+      }
+      .success-screen.active {
+        transform: translateY(0);
+      }
+      .success-icon-box {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: #2dd4bf; /* Teal/Green */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 30px rgba(45, 212, 191, 0.3);
+        margin-bottom: 24px;
+        color: white;
+        font-size: 3rem;
+      }
+      .success-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--wf-text-main);
+        margin-bottom: 12px;
+      }
+      .success-desc {
+        font-size: 0.95rem;
+        color: var(--wf-text-sub);
+        line-height: 1.5;
+        margin-bottom: 32px;
+      }
+      .table-info-box {
+        width: 100%;
+        background: #f8fafc;
+        border: 2px dashed #cbd5e1;
+        border-radius: 20px;
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: auto; /* Push button to bottom if needed, or just spacers */
+      }
+      .table-info-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--wf-text-sub);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      .table-info-number {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: var(--wf-text-main);
+      }
+      .btn-home {
+        width: 100%;
+        padding: 18px;
+        background: #1f2937; /* Dark */
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- WELCOME SCREEN -->
+      <div id="welcome-screen" class="welcome-screen">
+        <div class="ws-logo-area">
+          <div class="ws-logo-icon">
+            <i class="fas fa-utensils"></i>
+          </div>
+          <h1 class="ws-title">ร้านอาหารตัวอย่าง</h1>
+          <span class="ws-subtitle">ยินดีต้อนรับ</span>
+        </div>
+
+        <div class="ws-card">
+          <div class="ws-card-visual">
+             <i class="fas fa-chair ws-table-icon"></i>
+             <div class="ws-qr-box">
+               <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Table1" alt="QR" />
+             </div>
+          </div>
+          <div style="text-align: center;">
+            <div class="ws-table-name">โต๊ะที่ 1</div>
+            <div class="ws-table-desc">ชิปที่โต๊ะเพื่อเริ่มสั่งอาหาร</div>
+          </div>
+        </div>
+
+        <div class="ws-lang-row">
+          <div class="ws-lang-item active">TH</div>
+          <div class="ws-lang-item">EN</div>
+          <div class="ws-lang-item">CN</div>
+        </div>
+
+        <button id="btn-start-order" class="ws-btn-primary">เริ่มสั่งอาหาร</button>
+        <button class="ws-btn-secondary">ดูรายการที่สั่งไปแล้ว</button>
+
+        <div class="ws-footer-actions">
+           <div class="ws-action-item">
+             <div class="ws-action-icon"><i class="far fa-bell"></i></div>
+             <span class="ws-action-label">เรียกพนักงาน</span>
+           </div>
+           <div class="ws-action-item">
+             <div class="ws-action-icon"><i class="fas fa-wifi"></i></div>
+             <span class="ws-action-label">รหัส Wi-Fi</span>
+           </div>
+        </div>
+      </div>
+      <!-- END WELCOME SCREEN -->
+
+      <header class="top-header">
+        <div class="logo-placeholder">LOGO</div>
+        <div class="header-actions">
+          <div class="lang-switch">
+            <span>EN</span
+            ><i class="fas fa-chevron-down" style="font-size: 0.7rem"></i>
+          </div>
+          <div class="icon-btn"><i class="far fa-bell"></i></div>
+        </div>
+      </header>
+
+      <div class="content-scroll">
+        <section class="promo-section">
+          <div class="promo-banner">
+            <img
+              src="https://placehold.co/600x338/dedede/999999?text=Promotion+Banner"
+              alt="Promo"
+            />
+          </div>
+        </section>
+
+        <nav class="category-nav">
+          <div class="cat-item active">
+            <div class="cat-icon"><i class="fas fa-utensils"></i></div>
+            <span class="cat-label">All</span>
+          </div>
+          <div class="cat-item">
+            <div class="cat-icon"><i class="fas fa-hamburger"></i></div>
+            <span class="cat-label">Burger</span>
+          </div>
+          <div class="cat-item">
+            <div class="cat-icon"><i class="fas fa-pizza-slice"></i></div>
+            <span class="cat-label">Pizza</span>
+          </div>
+          <div id="trigger-cat-modal" class="cat-item">
+            <div class="cat-icon"><i class="fas fa-th-large"></i></div>
+            <span class="cat-label">More</span>
+          </div>
+        </nav>
+
+        <main class="menu-grid">
+          <article
+            class="menu-card"
+            onclick="
+              openItemModal(
+                'Cheese Burger',
+                '$8.99',
+                'https://placehold.co/300x300/dedede/999999?text=Burger',
+              )
+            "
+          >
+            <div class="card-img">
+              <img
+                src="https://placehold.co/300x300/dedede/999999?text=Burger"
+                alt="Burger"
+              />
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Cheese Burger</h3>
+              <div class="card-price-row">
+                <span class="card-price">$8.99</span
+                ><button class="add-btn"><i class="fas fa-plus"></i></button>
+              </div>
+            </div>
+          </article>
+          <article
+            class="menu-card"
+            onclick="
+              openItemModal(
+                'Pepperoni Pizza',
+                '$12.50',
+                'https://placehold.co/300x300/dedede/999999?text=Pizza',
+              )
+            "
+          >
+            <div class="card-img">
+              <img
+                src="https://placehold.co/300x300/dedede/999999?text=Pizza"
+                alt="Pizza"
+              />
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Pepperoni Pizza</h3>
+              <div class="card-price-row">
+                <span class="card-price">$12.50</span
+                ><button class="add-btn"><i class="fas fa-plus"></i></button>
+              </div>
+            </div>
+          </article>
+        </main>
+      </div>
+
+      <footer class="sticky-footer" id="footer-view-order">
+        <div class="footer-content">
+          <div class="order-info">
+            <span class="item-count">3 Items</span>
+            <span class="total-price">$24.00</span>
+          </div>
+          <span class="view-order-text">View Order</span>
+        </div>
+      </footer>
+
+      <div id="modal-categories" class="modal-overlay">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title">All Categories</h2>
+            <i
+              class="fas fa-times close-btn"
+              onclick="closeModal('modal-categories')"
+            ></i>
+          </div>
+          <div class="cat-grid">
+            <div class="cat-grid-item">
+              <div class="cat-grid-icon"><i class="fas fa-hamburger"></i></div>
+              <span>Burgers</span>
+            </div>
+            <div class="cat-grid-item">
+              <div class="cat-grid-icon">
+                <i class="fas fa-pizza-slice"></i>
+              </div>
+              <span>Pizza</span>
+            </div>
+            <div class="cat-grid-item">
+              <div class="cat-grid-icon"><i class="fas fa-coffee"></i></div>
+              <span>Drinks</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="modal-item" class="modal-overlay">
+        <div class="modal-content">
+          <div class="modal-header" style="border: none; margin-bottom: 0">
+            <div></div>
+            <i
+              class="fas fa-times close-btn"
+              onclick="closeModal('modal-item')"
+            ></i>
+          </div>
+          <div class="item-detail-image">
+            <img id="detail-img" src="" alt="" />
+          </div>
+          <div class="item-detail-info">
+            <h2 id="detail-title">Product</h2>
+            <span id="detail-price" class="item-detail-price">$0.00</span>
+            <div class="item-detail-desc"></div>
+            <div class="item-detail-desc short"></div>
+
+            <!-- NEW: Spiciness Level -->
+            <div class="option-section">
+              <div class="option-header">
+                <span class="option-title">Spiciness Level</span>
+                <span class="badge required">Required</span>
+              </div>
+              <div class="spiciness-options" id="spiciness-container">
+                <!-- Injected via JS or defaults -->
+                <div class="spicy-pill selected" onclick="selectSpiciness(this)">
+                  No Spicy 🌶️🚫
+                </div>
+                <div class="spicy-pill" onclick="selectSpiciness(this)">
+                  Mild 🔥
+                </div>
+                <div class="spicy-pill" onclick="selectSpiciness(this)">
+                  Spicy 🔥🔥
+                </div>
+              </div>
+            </div>
+
+            <!-- NEW: Extras -->
+            <div class="option-section">
+              <div class="option-header">
+                <span class="option-title">Extras</span>
+                <span class="badge optional">Optional</span>
+              </div>
+              <div class="extras-list">
+                <div class="extra-item" onclick="toggleExtra(this)">
+                  <div class="extra-label">
+                    <div class="extra-checkbox"><i class="fas fa-check"></i></div>
+                    <span>Extra Cheese</span>
+                  </div>
+                  <span class="extra-price">+$1.50</span>
+                </div>
+                <div class="extra-item" onclick="toggleExtra(this)">
+                  <div class="extra-label">
+                    <div class="extra-checkbox"><i class="fas fa-check"></i></div>
+                    <span>Add Bacon</span>
+                  </div>
+                  <span class="extra-price">+$2.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="item-actions">
+            <div class="qty-selector">
+              <i class="fas fa-minus"></i><span>1</span
+              ><i class="fas fa-plus"></i>
+            </div>
+            <button class="add-to-cart-btn">Add to Order</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="modal-order-summary" class="modal-overlay">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title">My Order</h2>
+            <i
+              class="fas fa-times close-btn"
+              onclick="closeModal('modal-order-summary')"
+            ></i>
+          </div>
+
+          <div class="order-item-list">
+            <div class="order-item">
+              <div class="order-item-info">
+                <span class="order-item-qty">2x</span>
+                <span>Cheese Burger</span>
+              </div>
+              <span class="card-price">$17.98</span>
+            </div>
+            <div class="order-item">
+              <div class="order-item-info">
+                <span class="order-item-qty">1x</span>
+                <span>Pepperoni Pizza</span>
+              </div>
+              <span class="card-price">$12.50</span>
+            </div>
+          </div>
+
+          <div class="summary-details">
+            <div class="summary-row">
+              <span>Subtotal</span><span>$30.48</span>
+            </div>
+            <div class="summary-row">
+              <span>Service Charge (10%)</span><span>$3.05</span>
+            </div>
+            <div class="summary-row total">
+              <span>Total</span><span>$33.53</span>
+            </div>
+          </div>
+
+          <button
+            class="checkout-btn"
+            id="btn-place-order"
+          >
+            Place Order
+          </button>
+        </div>
+      </div>
+
+      <!-- NEW: Success Screen -->
+      <div id="success-screen" class="success-screen">
+         <div class="success-icon-box">
+           <i class="fas fa-check"></i>
+         </div>
+         <h1 class="success-title">Order Confirmed!</h1>
+         <p class="success-desc">We've received your order and will start preparing it shortly.</p>
+
+         <div class="table-info-box">
+           <span class="table-info-label">Table Number</span>
+           <span class="table-info-number">01</span>
+         </div>
+
+         <button class="btn-home" onclick="resetToHome()">Back to Home</button>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        // 1. Open Categories Modal
+        const catTrigger = document.getElementById("trigger-cat-modal");
+        catTrigger.addEventListener("click", () => {
+          document.getElementById("modal-categories").classList.add("active");
+        });
+
+        // 2. Open Order Summary Modal (NEW)
+        const viewOrderTrigger = document.getElementById("footer-view-order");
+        viewOrderTrigger.addEventListener("click", () => {
+          document
+            .getElementById("modal-order-summary")
+            .classList.add("active");
+        });
+
+        // 3. Open Item Detail Modal
+        window.openItemModal = function (title, price, imgSrc) {
+          const itemModal = document.getElementById("modal-item");
+          document.getElementById("detail-title").textContent = title;
+          document.getElementById("detail-price").textContent = price;
+          document.getElementById("detail-img").src = imgSrc;
+          
+          // Reset Spiciness (Default to first)
+          const spiceContainer = document.getElementById('spiciness-container');
+          if (spiceContainer) {
+             spiceContainer.querySelectorAll('.spicy-pill').forEach(el => el.classList.remove('selected'));
+             const firstSpice = spiceContainer.querySelector('.spicy-pill');
+             if (firstSpice) firstSpice.classList.add('selected');
+          }
+
+          // Reset Extras
+          const extraItems = itemModal.querySelectorAll('.extra-item');
+          extraItems.forEach(el => el.classList.remove('selected'));
+
+          itemModal.classList.add("active");
+        };
+
+        // 4. Close functions
+        window.closeModal = function (modalId) {
+          document.getElementById(modalId).classList.remove("active");
+        };
+
+        // Close when clicking overlay
+        document.querySelectorAll(".modal-overlay").forEach((modal) => {
+          modal.addEventListener("click", (e) => {
+            if (e.target === modal) modal.classList.remove("active");
+          });
+        });
+
+        // 5. Option Logic
+        window.selectSpiciness = function (element) {
+          // Remove selected from siblings
+          const container = element.parentElement;
+          container.querySelectorAll(".spicy-pill").forEach((el) => {
+            el.classList.remove("selected");
+          });
+          // Add to clicked
+          element.classList.add("selected");
+        };
+
+        window.toggleExtra = function (element) {
+          element.classList.toggle("selected");
+        };
+
+        // 6. Welcome Screen Logic
+        const startOrderBtn = document.getElementById('btn-start-order');
+        startOrderBtn.addEventListener('click', () => {
+           document.getElementById('welcome-screen').classList.add('hidden');
+        });
+
+        // 7. Place Order Logic
+        const placeOrderBtn = document.getElementById('btn-place-order');
+        if(placeOrderBtn){
+            placeOrderBtn.addEventListener('click', () => {
+                closeModal('modal-order-summary');
+                document.getElementById('success-screen').classList.add('active');
+            });
+        }
+
+        // 8. Reset To Home
+        window.resetToHome = function() {
+            document.getElementById('success-screen').classList.remove('active');
+            // Show welcome screen again? Or just stay on order page?
+            // Usually "Back to Home" implies going back to the start or the menu.
+            // Let's assume staying on the menu for more ordering or resetting.
+            // If we want to fully reset:
+            // document.getElementById('welcome-screen').classList.remove('hidden');
+        };
+      })();
+    </script>
+  </body>
+</html>
