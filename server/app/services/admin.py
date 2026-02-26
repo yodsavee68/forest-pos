@@ -55,3 +55,49 @@ class AdminService:
         )
         
         return {"access_token": access_token, "token_type": "bearer"}
+
+    @staticmethod
+    async def get_all_admins(db: Session) -> list[Admin]:
+        stmt = select(Admin)
+        result = await db.execute(stmt)
+        return list(result.scalars().all())
+
+    @staticmethod
+    async def update_admin(db: Session, admin_id: int, admin_in: AdminCreate) -> Admin:
+        stmt = select(Admin).where(Admin.id == admin_id)
+        result = await db.execute(stmt)
+        existing_admin = result.scalar_one_or_none()
+        
+        if not existing_admin:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found"
+            )
+            
+        existing_admin.username = admin_in.username
+        existing_admin.display_name = admin_in.display_name
+        existing_admin.role = admin_in.role
+        
+        # In a real app we might want a separate payload to omit password updates, 
+        # but for simplicity if provided here we hash and update it
+        if admin_in.password:
+            existing_admin.password_hash = get_password_hash(admin_in.password)
+            
+        await db.commit()
+        await db.refresh(existing_admin)
+        return existing_admin
+
+    @staticmethod
+    async def delete_admin(db: Session, admin_id: int):
+        stmt = select(Admin).where(Admin.id == admin_id)
+        result = await db.execute(stmt)
+        existing_admin = result.scalar_one_or_none()
+        
+        if not existing_admin:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found"
+            )
+            
+        await db.delete(existing_admin)
+        await db.commit()
