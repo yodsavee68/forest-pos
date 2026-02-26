@@ -1,6 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from typing import List
 from sqlalchemy.orm import Session
 from app.database import get_db
+from app.api.deps import get_current_user, get_current_active_admin
+from app.models.user import Admin
 from app.schemas.admin import AdminCreate, AdminResponse, AdminLogin, Token
 from app.services.admin import AdminService
 
@@ -40,30 +43,31 @@ async def login_admin(login_data: AdminLogin, db: Session = Depends(get_db)):
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/me")
-async def get_me_dummy():
-    return {"path": "/api/admin/me"}
+@router.get("/me", response_model=AdminResponse)
+async def get_me(current_user: Admin = Depends(get_current_user)):
+    return current_user
 
-@router.get("/users")
-async def get_users_dummy():
-    return {"path": "/api/admin/users"}
+@router.get("/users", response_model=List[AdminResponse])
+async def get_users(db: Session = Depends(get_db), current_user: Admin = Depends(get_current_active_admin)):
+    return await AdminService.get_all_admins(db)
 
-@router.post("/users")
-async def create_user_dummy():
-    return {"path": "/api/admin/users"}
+@router.post("/users", response_model=AdminResponse, status_code=status.HTTP_201_CREATED)
+async def create_user(user_in: AdminCreate, db: Session = Depends(get_db), current_user: Admin = Depends(get_current_active_admin)):
+    return await AdminService.create_admin(db, user_in)
 
-@router.patch("/users/{user_id}")
-async def update_user_dummy(user_id: int):
-    return {"path": f"/api/admin/users/{user_id}"}
+@router.patch("/users/{user_id}", response_model=AdminResponse)
+async def update_user(user_id: int, user_in: AdminCreate, db: Session = Depends(get_db), current_user: Admin = Depends(get_current_active_admin)):
+    return await AdminService.update_admin(db, user_id, user_in)
 
-@router.delete("/users/{user_id}")
-async def delete_user_dummy(user_id: int):
-    return {"path": f"/api/admin/users/{user_id}"}
+@router.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_user(user_id: int, db: Session = Depends(get_db), current_user: Admin = Depends(get_current_active_admin)):
+    await AdminService.delete_admin(db, user_id)
+    return None
 
 @router.get("/dashboard/stats")
-async def get_dashboard_stats_dummy():
+async def get_dashboard_stats_dummy(current_user: Admin = Depends(get_current_user)):
     return {"path": "/api/admin/dashboard/stats"}
 
 @router.get("/dashboard/top-selling")
-async def get_dashboard_top_selling_dummy():
+async def get_dashboard_top_selling_dummy(current_user: Admin = Depends(get_current_user)):
     return {"path": "/api/admin/dashboard/top-selling"}
