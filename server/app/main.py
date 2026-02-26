@@ -32,8 +32,16 @@ if settings.BACKEND_CORS_ORIGINS:
 app.mount("/socket.io", socket_app)
 
 # API Routers
-from app.api import admin
+from app.api import admin, orders, kitchen, products, categories, modifiers, tables, notifications, settings
 app.include_router(admin.router, prefix="/api/admin", tags=["Admin Auth"])
+app.include_router(orders.router, prefix="/api/orders", tags=["Orders"])
+app.include_router(kitchen.router, prefix="/api/kitchen", tags=["Kitchen"])
+app.include_router(products.router, prefix="/api/products", tags=["Products"])
+app.include_router(categories.router, prefix="/api/categories", tags=["Categories"])
+app.include_router(modifiers.router, prefix="/api/modifiers", tags=["Modifiers"])
+app.include_router(tables.router, prefix="/api/tables", tags=["Tables"])
+app.include_router(notifications.router, prefix="/api/notifications", tags=["Notifications"])
+app.include_router(settings.router, prefix="/api/settings", tags=["Settings"])
 
 @app.get("/")
 async def root():
