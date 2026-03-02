@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
-const TOKEN_KEY = "admin_token";
+const TOKEN_KEY = "admin_access_token";
 
 export async function loginAdmin(formData: FormData) {
     const username = formData.get("username") as string;
