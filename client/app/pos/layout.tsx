@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import styles from "./pos.module.css";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Sidebar from "./components/Sidebar";
+import { getCurrentAdmin } from "../../lib/auth";
 
 export default function POSLayout({
     children,
@@ -12,55 +13,21 @@ export default function POSLayout({
 }) {
     const pathname = usePathname();
     const [searchQuery, setSearchQuery] = useState("");
+    const [user, setUser] = useState<{ display_name: string } | null>(null);
 
-    const isActive = (path: string) => pathname?.startsWith(path);
+    React.useEffect(() => {
+        getCurrentAdmin().then((res) => {
+            if (res) {
+                setUser(res);
+            }
+        }).catch(console.error);
+    }, []);
 
     return (
         <div className={styles.container}>
             <div className={styles.componentContainer}>
                 {/* Sidebar */}
-                <aside className={styles.sidebar}>
-                    <div className={styles.logo}>
-                        <i className="fas fa-utensils"></i>
-                    </div>
-                    <nav>
-                        <Link
-                            href="/pos/tables"
-                            className={`${styles.navItem} ${isActive("/pos/tables") ? styles.active : ""}`}
-                        >
-                            <i className="fas fa-th"></i>
-                            <span>TABLES</span>
-                        </Link>
-                        <Link
-                            href="/pos/menu"
-                            className={`${styles.navItem} ${isActive("/pos/menu") ? styles.active : ""}`}
-                        >
-                            <i className="fas fa-book-open"></i>
-                            <span>MENU</span>
-                        </Link>
-                        <Link
-                            href="/pos/orders"
-                            className={`${styles.navItem} ${isActive("/pos/orders") ? styles.active : ""}`}
-                        >
-                            <i className="fas fa-clipboard-list"></i>
-                            <span>ORDERS</span>
-                        </Link>
-                        <Link
-                            href="/pos/terminal"
-                            className={`${styles.navItem} ${isActive("/pos/terminal") ? styles.active : ""}`}
-                        >
-                            <i className="fas fa-cash-register"></i>
-                            <span>POS</span>
-                        </Link>
-                        <Link
-                            href="/pos/settings"
-                            className={`${styles.navItem} ${isActive("/pos/settings") ? styles.active : ""}`}
-                        >
-                            <i className="fas fa-cog"></i>
-                            <span>SETTINGS</span>
-                        </Link>
-                    </nav>
-                </aside>
+                <Sidebar />
 
                 {/* Main Content */}
                 <main className={styles.mainWrapper}>
@@ -75,9 +42,13 @@ export default function POSLayout({
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
                         </div>
-                        <div className="flex items-center gap-4">
-                            <span className="font-semibold text-gray-700">Admin Staff</span>
-                            <div className="w-8 h-8 rounded-full bg-purple-500"></div>
+                        <div className="flex items-center gap-4 cursor-pointer hover:bg-gray-50 py-1 px-3 rounded-lg transition-colors">
+                            <span className="font-semibold text-gray-700">
+                                {user ? user.display_name : "Loading..."}
+                            </span>
+                            <div className="w-8 h-8 rounded-full bg-purple-500 text-white flex items-center justify-center font-bold text-sm">
+                                {user ? user.display_name.charAt(0).toUpperCase() : ""}
+                            </div>
                         </div>
                     </header>
 

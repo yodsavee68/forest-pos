@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const TOKEN_KEY = "admin_token";
+const TOKEN_KEY = "admin_access_token";
 
 // Define the routes that need protection
-// For example, protecting the main POS, Kitchen, and Admin dashboard
-const protectedRoutes = ["/pos", "/kitchen", "/admin/dashboard", "/order"];
+// For example, protecting the main POS, Kitchen, Admin dashboard, Test Auth
+const protectedRoutes = ["/pos", "/kitchen", "/admin/dashboard", "/order", "/test-auth"];
 
 // Define the public auth routes so logged in users don't see login again
-const authRoutes = ["/admin/login", "/admin/register"];
+const authRoutes = ["/login", "/admin/login", "/admin/register"];
 
 export function middleware(request: NextRequest) {
     const path = request.nextUrl.pathname;
@@ -27,15 +27,15 @@ export function middleware(request: NextRequest) {
 
     // Redirect to login if accessing protected route without token
     if (isProtectedRoute && !token) {
-        const url = new URL("/admin/login", request.url);
+        const url = new URL("/login", request.url);
         // You can optionally pass the redirect url as a query param
         // url.searchParams.set("callbackUrl", encodeURI(path));
         return NextResponse.redirect(url);
     }
 
-    // Redirect to dashboard (or pos) if accessing login/register while logged in
+    // Redirect to test-auth (or pos) if accessing login/register while logged in
     if (isAuthRoute && token) {
-        return NextResponse.redirect(new URL("/pos", request.url));
+        return NextResponse.redirect(new URL("/test-auth", request.url));
     }
 
     return NextResponse.next();
